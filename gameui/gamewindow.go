@@ -57,13 +57,20 @@ func (gw *GameWindow) newTappedFunc(i int) func() {
 
 		gw.gameBoard.PutChar(gw.player[0], row, col)
 
-		if gw.gameBoard.IsOver() != nil {
-			gw.lbl.SetText(gw.player + "Won")
+		gStat := gw.gameBoard.IsOver()
+
+		if len(gStat) == 0 && gStat != nil {
+			gw.updateLabel("Draw")
+			gw.diableAllBtns()
+			return
+		} else if gStat != nil {
+			gw.updateLabel(gw.player + " Won!!!")
+			gw.diableAllBtns()
 			return
 		}
 
 		gw.togglePlayer()
-		gw.lbl.SetText(gw.player + "'s turn")
+		gw.updateLabel(gw.player + "'s turn")
 
 	}
 }
@@ -91,6 +98,16 @@ func (gw *GameWindow) trans(i int) (int, int) {
 	}
 
 	return row, col
+}
+
+func (gw *GameWindow) diableAllBtns() {
+	for _, btn := range gw.btns {
+		btn.Disable()
+	}
+}
+
+func (gw *GameWindow) updateLabel(txt string) {
+	gw.lbl.SetText(txt)
 }
 
 func (gw *GameWindow) ShowAndRun() {
