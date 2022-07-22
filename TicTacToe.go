@@ -7,7 +7,5 @@ import (
 func main() {
 	gw := gameui.NewGameWindow()
 
-	gw.RenderNewWindow()
 	gw.ShowAndRun()
 }
-

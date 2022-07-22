@@ -4,6 +4,7 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/widget"
 	"github.com/SakthiMahendran/TicTacToe/gameboard"
 )
@@ -13,6 +14,7 @@ func NewGameWindow() GameWindow {
 
 	gw.game = app.New()
 	gw.window = gw.game.NewWindow("TicTacToe")
+	gw.RenderNewWindow()
 
 	return gw
 }
@@ -61,10 +63,30 @@ func (gw *GameWindow) newTappedFunc(i int) func() {
 		if len(gStat) == 0 && gStat != nil {
 			gw.updateLabel("Draw")
 			gw.diableAllBtns()
+			b := gw.showDialog("Draw")
+
+			go func() {
+				if <-b {
+					gw.RenderNewWindow()
+				} else {
+					gw.game.Quit()
+				}
+			}()
+
 			return
 		} else if gStat != nil {
 			gw.updateLabel(gw.player + " Won!!!")
 			gw.diableAllBtns()
+			b := gw.showDialog(gw.player + " Won!!!")
+
+			go func() {
+				if <-b {
+					gw.RenderNewWindow()
+				} else {
+					gw.game.Quit()
+				}
+			}()
+
 			return
 		}
 
@@ -107,6 +129,15 @@ func (gw *GameWindow) diableAllBtns() {
 
 func (gw *GameWindow) updateLabel(txt string) {
 	gw.lbl.SetText(txt)
+}
+
+func (gw *GameWindow) showDialog(txt string) chan bool {
+	c := make(chan bool)
+	dialog.ShowCustomConfirm("TicTacToe", "Continue", "Quit", widget.NewLabel(txt), func(b bool) {
+		c <- b
+	}, gw.window)
+
+	return c
 }
 
 func (gw *GameWindow) ShowAndRun() {
