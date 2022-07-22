@@ -42,7 +42,6 @@ func (gw *GameWindow) RenderNewWindow() {
 	panel.SetOffset(0)
 
 	gw.window.Resize(fyne.NewSize(600, 600))
-
 	gw.window.SetContent(panel)
 }
 

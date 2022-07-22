@@ -24,9 +24,6 @@ func (gb *GameBoard) GetChar(row, col int) byte {
 }
 
 func (gb *GameBoard) IsOver() [][]byte {
-	if gb.isBoardFilled() {
-		return [][]byte{}
-	}
 
 	row := gb.checkRows()
 	if row != nil {
@@ -41,6 +38,10 @@ func (gb *GameBoard) IsOver() [][]byte {
 	dia := gb.checkDiagonals()
 	if dia != nil {
 		return dia
+	}
+
+	if gb.isBoardFilled() {
+		return [][]byte{}
 	}
 
 	return nil
