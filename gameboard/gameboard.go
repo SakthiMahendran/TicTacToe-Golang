@@ -47,6 +47,16 @@ func (gb *GameBoard) IsOver() [][]byte {
 	return nil
 }
 
+func (gb *GameBoard) Reset() {
+	for i := 0; i <= 2; i++ {
+		for j := 0; j <= 2; j++ {
+			if gb.board[i][j] != 0 {
+				gb.board[i][j] = 0
+			}
+		}
+	}
+}
+
 func (gb *GameBoard) isBoardFilled() bool {
 	for i := 0; i <= 2; i++ {
 		for j := 0; j <= 2; j++ {

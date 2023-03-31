@@ -12,6 +12,7 @@ import (
 func NewGameWindow() GameWindow {
 	gw := GameWindow{}
 
+	gw.gameBoard = &gameboard.GameBoard{}
 	gw.game = app.New()
 	gw.window = gw.game.NewWindow("TicTacToe")
 	gw.RenderNewWindow()
@@ -30,7 +31,7 @@ type GameWindow struct {
 
 func (gw *GameWindow) RenderNewWindow() {
 	gw.player = "X"
-	gw.gameBoard = &gameboard.GameBoard{}
+	gw.gameBoard.Reset()
 	gw.lbl = widget.NewLabel(gw.player + "'s turn")
 
 	btnGrid := container.NewGridWithColumns(3)
